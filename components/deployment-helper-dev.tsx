@@ -7,9 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Copy, Check, AlertCircle, Server, Globe, Github } from "lucide-react"
 
-// This component is only for development use
-// It's not imported in the main application for production
-export function DeploymentHelperDev() {
+export function DeploymentHelper() {
   const [copied, setCopied] = useState<string | null>(null)
   const [showHelper, setShowHelper] = useState(false)
 
