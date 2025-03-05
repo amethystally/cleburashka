@@ -61,8 +61,13 @@ export function EmailFetcher() {
       // Format the result to be more user-friendly
       let formattedResult = data.trim()
 
+      // Special handling for "SG" response (case-insensitive)
+      if (formattedResult.toUpperCase() === "SG") {
+        console.log("Email component: Converting SG to 'Account not found'")
+        formattedResult = "Account not found"
+      }
       // If it's a country code, add some context
-      if (formattedResult.length === 2 && /^[A-Z]{2}$/.test(formattedResult)) {
+      else if (formattedResult.length === 2 && /^[A-Z]{2}$/i.test(formattedResult)) {
         const countryNames: Record<string, string> = {
           US: "United States",
           GB: "United Kingdom",
@@ -84,8 +89,8 @@ export function EmailFetcher() {
           // Add more as needed
         }
 
-        const countryName = countryNames[formattedResult] || "Unknown Country"
-        formattedResult = `${formattedResult} (${countryName})`
+        const countryName = countryNames[formattedResult.toUpperCase()] || "Unknown Country"
+        formattedResult = `${formattedResult.toUpperCase()} (${countryName})`
       }
 
       setResult(formattedResult)
