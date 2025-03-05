@@ -1,11 +1,13 @@
 "use client"
 
+import { CardFooter } from "@/components/ui/card"
+
 import type React from "react"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 // Country code to name mapping
@@ -107,7 +109,7 @@ const tldCountryMap: Record<string, string> = {
   mx: "MX", // Mexico
   kr: "KR", // South Korea
   ch: "CH", // Switzerland
-  be: "BE", // Belgium
+  be: "Belgium",
   ca: "CA", // Canada
   au: "AU", // Australia
   // Add more as needed
@@ -174,8 +176,18 @@ export function EmailFetcherStatic() {
       }
 
       // Format the result
-      const countryName = countryNames[countryCode] || "Unknown Country"
-      const formattedResult = `${countryCode} (${countryName})`
+      let formattedResult = countryCode
+
+      // Special handling for "SG" response - always convert to "Account not found" (case-insensitive)
+      if (formattedResult.toUpperCase() === "SG") {
+        console.log("Static component: Converting SG to 'Account not found'")
+        formattedResult = "Account not found"
+      }
+      // If it's a country code, add some context
+      else if (formattedResult.length === 2 && /^[A-Z]{2}$/i.test(formattedResult)) {
+        const countryName = countryNames[formattedResult.toUpperCase()] || "Unknown Country"
+        formattedResult = `${formattedResult.toUpperCase()} (${countryName})`
+      }
 
       setResult(formattedResult)
     } catch (err) {
